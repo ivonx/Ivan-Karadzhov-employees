@@ -5,7 +5,7 @@ import java.util.List;
 public interface EmployeeService {
     List<EmployeeRecord> getEmployeeRecordsForProject(String fileName);
 
-    List<EmployeeRecord> getEmployeePairRecords(String fileName);
+    List<EmployeeRecord> getEmployeeRecords(String fileName);
 
-    EmployeePairResult getEmployeePair(String fileName);
+    EmployeeRecordResult getEmployeeRecordResult(String fileName);
 }

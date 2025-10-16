@@ -16,18 +16,18 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/{fileName}")
+    @GetMapping("/records/{fileName}")
     public ResponseEntity<List<EmployeeRecord>> getEmployeeRecords(@PathVariable String fileName) {
+        return ResponseEntity.ok(this.employeeService.getEmployeeRecords(fileName));
+    }
+
+    @GetMapping("/record/{fileName}")
+    public ResponseEntity<EmployeeRecordResult> getEmployeeRecordResult(@PathVariable String fileName) {
+        return ResponseEntity.ok(this.employeeService.getEmployeeRecordResult(fileName));
+    }
+
+    @GetMapping("/project-records/{fileName}")
+    public ResponseEntity<List<EmployeeRecord>> getEmployeeRecordsForProject(@PathVariable String fileName) {
         return ResponseEntity.ok(this.employeeService.getEmployeeRecordsForProject(fileName));
-    }
-
-    @GetMapping("/pair-records/{fileName}")
-    public ResponseEntity<List<EmployeeRecord>> getEmployeePairRecords(@PathVariable String fileName) {
-        return ResponseEntity.ok(this.employeeService.getEmployeePairRecords(fileName));
-    }
-
-    @GetMapping("/pair/{fileName}")
-    public ResponseEntity<EmployeePairResult> getEmployeePair(@PathVariable String fileName) {
-        return ResponseEntity.ok(this.employeeService.getEmployeePair(fileName));
     }
 }

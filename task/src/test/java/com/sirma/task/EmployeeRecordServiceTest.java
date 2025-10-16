@@ -40,9 +40,9 @@ public class EmployeeRecordServiceTest {
 
     @Test
     void testEmployeePairResultWithMoreData() {
-        EmployeePairResult employeePairResult = this.employeeService.getEmployeePair("bigFile.csv");
-        assertEquals(6, employeePairResult.getEmployeePair().getFirstEmployeeId());
-        assertEquals(13, employeePairResult.getEmployeePair().getSecondEmployeeId());
-        assertEquals(573, employeePairResult.getDaysWorkedTogether());
+        EmployeeRecordResult employeeRecordResult = this.employeeService.getEmployeeRecordResult("bigFile.csv");
+        assertEquals(6, employeeRecordResult.getEmployeePair().getFirstEmployeeId());
+        assertEquals(13, employeeRecordResult.getEmployeePair().getSecondEmployeeId());
+        assertEquals(573, employeeRecordResult.getDaysWorkedTogether());
     }
 }

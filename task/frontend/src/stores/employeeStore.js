@@ -3,47 +3,47 @@ import * as employeeService from "@/services/EmployeeService.js";
 
 export const useEmployeeStore = defineStore('employee', {
   state: () => ({
-    employeeRecords: [],
+    employeeRecordsForProject: [],
     loadingEmployeeRecordsForProject: false,
-    employeePairRecords: [],
-    loadingEmployeePairRecords: false,
-    employeePairResult: {}
+    employeeRecords: [],
+    loadingEmployeeRecords: false,
+    employeeRecordResult: {}
   }),
   actions: {
-    async loadEmployeeRecordsForProject(fileName) {
+    async loadEmployeeRecords(fileName) {
       try {
-        this.loadingEmployeeRecordsForProject = true
-        await employeeService.getEmployeeRecordsForProject(fileName)
+        this.loadingEmployeeRecords = true
+        await employeeService.getEmployeeRecords(fileName)
           .then((response) => {
             this.employeeRecords = response.data
           })
       } catch (error) {
         console.error('Error loading employee records:', error)
       } finally {
-        this.loadingEmployeeRecordsForProject = false
+        this.loadingEmployeeRecords = false
       }
     },
-    async loadEmployeePairRecords(fileName) {
+    async loadEmployeeRecordResult(fileName) {
       try {
-        this.loadingEmployeePairRecords = true
-        await employeeService.getEmployeePairRecords(fileName)
+        await employeeService.getEmployeeRecordResult(fileName)
           .then((response) => {
-            this.employeePairRecords = response.data
+            this.employeeRecordResult = response.data
+          })
+      } catch (error) {
+        console.error('Error loading employee record result:', error)
+      }
+    },
+    async loadEmployeeRecordsForProject(fileName) {
+      try {
+        this.loadingEmployeeRecordsForProject = true
+        await employeeService.getEmployeeRecordsForProject(fileName)
+          .then((response) => {
+            this.employeeRecordsForProject = response.data
           })
       } catch (error) {
         console.error('Error loading employee records:', error)
       } finally {
-        this.loadingEmployeePairRecords = false
-      }
-    },
-    async loadEmployeePairResult(fileName) {
-      try {
-        await employeeService.getEmployeePairResult(fileName)
-          .then((response) => {
-            this.employeePairResult = response.data
-          })
-      } catch (error) {
-        console.error('Error loading employee pair:', error)
+        this.loadingEmployeeRecordsForProject = false
       }
     }
   }

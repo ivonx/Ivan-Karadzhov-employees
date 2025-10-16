@@ -17,39 +17,39 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeRecord> getEmployeeRecordsForProject(String fileName) {
-        final List<EmployeeBean> employeeBeans = this.csvReaderService.readEmployees(fileName);
-        return this.findLongestPairsForProject(employeeBeans);
-    }
-
-    @Override
-    public List<EmployeeRecord> getEmployeePairRecords(String fileName) {
+    public List<EmployeeRecord> getEmployeeRecords(String fileName) {
         final List<EmployeeBean> employeeBeans = this.csvReaderService.readEmployees(fileName);
         final List<EmployeeRecord> employeeRecords = this.findEmployeeRecordsWithOverlap(employeeBeans);
         if (employeeRecords.isEmpty()) {
             return Collections.emptyList();
         }
-        EmployeePairResult employeePairResult = this.findLongestPair(employeeRecords);
+        EmployeeRecordResult employeeRecordResult = this.findPairWithLongestWorkingTime(employeeRecords);
         return this.findEmployeeRecordsWithOverlap(employeeBeans).stream()
-                .filter(employeeRecord -> employeeRecord.getEmployeePair().equals(employeePairResult.getEmployeePair()))
+                .filter(employeeRecord -> employeeRecord.getEmployeePair().equals(employeeRecordResult.getEmployeePair()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public EmployeePairResult getEmployeePair(String fileName) {
+    public EmployeeRecordResult getEmployeeRecordResult(String fileName) {
         final List<EmployeeBean> employeeBeans = this.csvReaderService.readEmployees(fileName);
         final List<EmployeeRecord> employeeRecords = this.findEmployeeRecordsWithOverlap(employeeBeans);
         if (employeeRecords.isEmpty()) {
-            return new EmployeePairResult();
+            return new EmployeeRecordResult();
         }
-        return this.findLongestPair(employeeRecords);
+        return this.findPairWithLongestWorkingTime(employeeRecords);
+    }
+
+    @Override
+    public List<EmployeeRecord> getEmployeeRecordsForProject(String fileName) {
+        final List<EmployeeBean> employeeBeans = this.csvReaderService.readEmployees(fileName);
+        return this.findPairsWithLongestWorkingTimeForProject(employeeBeans);
     }
 
     /**
      * Returns a list of employee records with employee pairs that have worked together
      * on common project for the longest period of time.
      */
-    private List<EmployeeRecord> findLongestPairsForProject(List<EmployeeBean> employees) {
+    private List<EmployeeRecord> findPairsWithLongestWorkingTimeForProject(List<EmployeeBean> employees) {
         Map<Long, List<EmployeeBean>> employeesByProjectId = employees.stream()
                 .collect(Collectors.groupingBy(EmployeeBean::getProjectId));
 
@@ -123,7 +123,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Returns an employee pair that have worked together on common projects for the longest period of time
      */
-    private EmployeePairResult findLongestPair(List<EmployeeRecord> employeeRecords) {
+    private EmployeeRecordResult findPairWithLongestWorkingTime(List<EmployeeRecord> employeeRecords) {
         Map<EmployeePair, Long> pairsWithWorkingDaysTogether = new HashMap<>();
         employeeRecords.forEach(employeeRecord -> {
             if (!pairsWithWorkingDaysTogether.containsKey(employeeRecord.getEmployeePair())) {
@@ -133,6 +133,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         });
         Map.Entry<EmployeePair, Long> resultEntry = Collections.max(pairsWithWorkingDaysTogether.entrySet(), Map.Entry.comparingByValue());
-        return new EmployeePairResult(resultEntry.getKey(), resultEntry.getValue());
+        return new EmployeeRecordResult(resultEntry.getKey(), resultEntry.getValue());
     }
 }

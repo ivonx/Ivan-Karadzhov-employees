@@ -5,31 +5,31 @@ export const api = axios.create({
   params: {}
 })
 
+export function getEmployeeRecords(fileName) {
+  return new Promise((resolve, reject) => {
+    api.get(`http://localhost:8080/api/employees/records/${fileName}`)
+      .then((response) => {
+        resolve(response)
+      }).catch((error) => {
+      reject(error)
+    })
+  })
+}
+
+export function getEmployeeRecordResult(fileName) {
+  return new Promise((resolve, reject) => {
+    api.get(`http://localhost:8080/api/employees/record/${fileName}`)
+      .then((response) => {
+        resolve(response)
+      }).catch((error) => {
+      reject(error)
+    })
+  })
+}
+
 export function getEmployeeRecordsForProject(fileName) {
   return new Promise((resolve, reject) => {
-    api.get(`http://localhost:8080/api/employees/${fileName}`)
-      .then((response) => {
-        resolve(response)
-      }).catch((error) => {
-      reject(error)
-    })
-  })
-}
-
-export function getEmployeePairRecords(fileName) {
-  return new Promise((resolve, reject) => {
-    api.get(`http://localhost:8080/api/employees/pair-records/${fileName}`)
-      .then((response) => {
-        resolve(response)
-      }).catch((error) => {
-      reject(error)
-    })
-  })
-}
-
-export function getEmployeePairResult(fileName) {
-  return new Promise((resolve, reject) => {
-    api.get(`http://localhost:8080/api/employees/pair/${fileName}`)
+    api.get(`http://localhost:8080/api/employees/project-records/${fileName}`)
       .then((response) => {
         resolve(response)
       }).catch((error) => {
